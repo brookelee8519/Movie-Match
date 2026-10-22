@@ -61,8 +61,8 @@ Python, pandas, scikit-learn, surprise, Streamlit
 ## Running it
 
 ```bash
-git clone <repo-url>
-cd movie-project
+git clone https://github.com/brookelee8519/Movie-Match.git
+cd Movie-Match
 pip install -r requirements.txt
 streamlit run app.py
 ```
