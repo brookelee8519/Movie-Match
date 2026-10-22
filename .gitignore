@@ -1,2 +1,4 @@
 .ipynb_checkpoints/
 anaconda_projects/
+**/.ipynb_checkpoints/
+data/*.csv
