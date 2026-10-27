@@ -38,16 +38,11 @@ Tried to predict if a movie would be a "hit" (made back 2x its budget)
 using stuff you'd know before release — budget, runtime, release month,
 genre.
 
-First try got 70% accuracy, which seemed decent until I checked feature
-importance and saw "popularity" was doing almost half the work. Problem
-is popularity on TMDB isn't really a pre-release number, it can go up
-after a movie comes out and people start searching it, so using it was data leakage.
+First I removed movies with missing revenue (listed as $0) or obviously wrong budgets, leaving 3,216 movies.
 
-Took it out and reran it — accuracy dropped to 54%, basically coin flip
-territory. Lower, but a more honest result.
-Shows budget/runtime/month alone don't really predict success, you'd
-need better features (star power, sequel or not, marketing budget) to
-actually do this for real.
+First try got 70% accuracy, which seemed decent until I checked feature importance and saw “popularity” was doing over a third of the work. Problem is popularity on TMDB isn’t really a pre-release number, it can go up after a movie comes out and people start searching it, so using it was data leakage.
+
+Took it out and reran it, and accuracy dropped to 54.5%. That’s actually below the 57% you’d get by always guessing “hit,” so budget, runtime, and month alone don’t predict success. You’d need better features (star power, sequel or not, marketing budget) to actually do this for real.
 
 ### The app
 Streamlit app, pick a movie from a dropdown, click a button, get recs.
