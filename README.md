@@ -5,7 +5,7 @@ tries to predict if a movie will do well at the box office. Basically
 pretending to be a data scientist at a streaming company trying to figure
 out what to recommend people and what to greenlight.
 
-![Movie Match app](screenshot.png)
+![Movie Match app](movie_app.png)
 
 ## What it does
 
