@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import ast
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="Movie Match")
+
 
 @st.cache_data
 def load_data():
@@ -43,41 +43,46 @@ def load_data():
     for col in ['genres_list', 'keywords_list', 'cast_list']:
         df[col] = df[col].apply(clean_names)
 
-    df['director_clean'] = df['director'].apply(lambda x: str.lower(x.replace(" ","")) if isinstance(x, str) else '')
+    df['director_clean'] = df['director'].apply(lambda x: str.lower(x.replace(" ", "")) if isinstance(x, str) else '')
     df['tags'] = df['genres_list'] + df['keywords_list'] + df['cast_list']
     df['tags'] = df['tags'].apply(lambda x: ' '.join(x)) + ' ' + df['director_clean']
 
+    # a few titles appear twice (e.g. "Batman", "The Host"), so keep the first one
+    df = df.drop_duplicates(subset='title').reset_index(drop=True)
     return df
 
+
+@st.cache_resource
+def build_similarity(tags):
+    # computed once and reused, instead of on every click
+    tfidf = TfidfVectorizer(stop_words='english')
+    matrix = tfidf.fit_transform(tags)
+    return cosine_similarity(matrix)
+
+
 df = load_data()
+sim = build_similarity(df['tags'])
+indices = pd.Series(df.index, index=df['title'])
 
-tfidf = TfidfVectorizer(stop_words='english')
-matrix = tfidf.fit_transform(df['tags'])
-sim = cosine_similarity(matrix)
-
-indices = pd.Series(df.index, index=df['title']).drop_duplicates()
 
 def recommend(title, n=5):
     idx = indices[title]
     scores = list(enumerate(sim[idx]))
     scores = sorted(scores, key=lambda x: x[1], reverse=True)
-    scores = scores[1:n+1]
-    movies = []
-    for i, score in scores:
-        movies.append(df.iloc[i]['title'])
-    return movies
+    scores = scores[1:n + 1]
+    return [df.iloc[i]['title'] for i, _ in scores]
+
 
 st.title("Movie Match")
-st.write("pick a movie and get some similar recs")
+st.write("Pick a movie to get 5 similar recommendations (content-based: genres, keywords, top cast, and director).")
 
 st.divider()
 
-movie_list = df['title'].sort_values().tolist()
+movie_list = sorted(df['title'].tolist())
 choice = st.selectbox("Movie:", movie_list)
 
-if st.button("get recs"):
+if st.button("Get Recommendations"):
     results = recommend(choice)
-    st.write("movies like " + choice + ":")
-    cols = st.columns(len(results))
-    for col, m in zip(cols, results):
-        col.write(m)
+    st.subheader(f"Movies like {choice}:")
+    for m in results:
+        st.write("• " + m)
