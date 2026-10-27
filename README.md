@@ -10,7 +10,7 @@ out what to recommend people and what to greenlight.
 ## What it does
 
 ### Recommender (content-based)
-Takes each movie's genres, keywords, top 3 actors, and director and mashes
+Takes each movie's genres, keywords, top 3 actors, and director and combines
 them into one text field per movie. Runs TF-IDF on that, then cosine
 similarity to see which movies are "closest" to each other. Type in a
 movie, get back 5 similar ones.
@@ -41,11 +41,10 @@ genre.
 First try got 70% accuracy, which seemed decent until I checked feature
 importance and saw "popularity" was doing almost half the work. Problem
 is popularity on TMDB isn't really a pre-release number, it can go up
-after a movie comes out and people start searching it, so using it felt
-like cheating a little (data leakage).
+after a movie comes out and people start searching it, so using it was data leakage.
 
 Took it out and reran it — accuracy dropped to 54%, basically coin flip
-territory. Kind of a letdown number-wise but it's a more honest result.
+territory. Lower, but a more honest result.
 Shows budget/runtime/month alone don't really predict success, you'd
 need better features (star power, sequel or not, marketing budget) to
 actually do this for real.
@@ -71,7 +70,7 @@ folder — grab them from Kaggle.
 
 ## Stuff that's not perfect / what I'd fix with more time
 
-- the ratings are fake, so the collaborative filtering part is more of a
+- the ratings are simulated, so the collaborative filtering part is more of a
   proof it works than something trained on real behavior
 - popularity leaking into the classifier was a good reminder to actually
   check feature importance instead of just trusting the accuracy number
