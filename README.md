@@ -46,7 +46,9 @@ Took it out and reran it, and accuracy dropped to 54.5%. That’s actually below
 
 ### The app
 Streamlit app, pick a movie from a dropdown, click a button, get recs.
-Nothing fancy but it works.
+Nothing fancy but it works. (The hybrid/collaborative filtering and the
+box-office classifier are developed and evaluated in `notebooks/01_data_exploration.ipynb`
+— the deployed app currently only exposes the content-based recommender.)
 
 ## Built with
 Python, pandas, scikit-learn, surprise, Streamlit
