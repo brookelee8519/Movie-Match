@@ -34,7 +34,7 @@ recommendations. That's the proof it's actually using the simulated user data
 and not just falling back on content similarity every time.
 
 ### Box office classifier
-Tried to predict if a movie would be a "hit" (made back 2x its budget)
+I tried to predict if a movie would be a "hit" (made back 2x its budget)
 using stuff you'd know before release — budget, runtime, release month,
 genre.
 
@@ -71,7 +71,9 @@ folder — grab them from Kaggle.
   proof it works than something trained on real behavior
 - popularity leaking into the classifier was a good reminder to actually
   check feature importance instead of just trusting the accuracy number
-- only used first genre listed + top 3 cast for the tags, a real version
-  would probably use more
+- the box office classifier only used each movie's first listed genre (a
+  real version would use all of them, or weight by relevance)
+- the recommender's tags use top 3 cast only, not the full cast list — a
+  real version would probably use more
 - with actual user watch history this whole thing would be a lot more
   legit, especially the collaborative filtering side
