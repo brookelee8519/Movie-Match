@@ -20,10 +20,9 @@ The problem with just content-based is it only looks at what a movie IS,
 not what people actually watch. So two totally different movies could get
 watched by the same people and the content model would never catch that.
 
-Since this dataset doesn't have real user ratings, I made up a fake one —
-500 users, each rating ~20 movies, biased toward a couple genres they
-"like" so it's not pure noise. Trained an SVD model on that with the
-surprise library, got an RMSE of about 0.84.
+Since this dataset doesn't have real user ratings, I simulated them: 500 users, each rating 20 movies (14 from two favorite genres, 6 random), with higher ratings for movies in their favorite genres. Then I trained an SVD model on those ratings with the surprise library.
+
+I compared SVD against two baselines: random guessing (RMSE 1.204) and predicting from user and movie averages (RMSE 0.910). SVD scored 0.923, about the same as the averages baseline. That makes sense here: each simulated user only has about 16 training ratings, too few for SVD to learn more than their average taste. With real viewing history, collaborative filtering would have much more to learn from.
 
 Then I combined both scores:
 ```
@@ -31,7 +30,7 @@ final_score = 0.5 * content_score + 0.5 * collaborative_score
 ```
 
 The important part: same movie, different user, different
-recommendations. That's the proof it's actually using the fake user data
+recommendations. That's the proof it's actually using the simulated user data
 and not just falling back on content similarity every time.
 
 ### Box office classifier
